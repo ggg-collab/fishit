@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Fisch Rod Unlocker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap');
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            /* Background Image */
+            background: url('https://i.ibb.co/WWjFP5Mv/unnamed-5.jpg') no-repeat center center fixed;
+            background-size: cover;
+            -webkit-tap-highlight-color: transparent;
+            overflow-x: hidden;
+        }
+
+        /* Improved Overlay for Contrast */
+        .bg-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* Gradient darker at bottom to help cards stand out */
+            background: linear-gradient(to bottom, rgba(0, 20, 40, 0.5), rgba(0, 10, 30, 0.7));
+            z-index: -1;
+        }
+
+        /* Floating Fish Background Animation */
+        .fish-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1; /* Behind content, above bg-overlay */
+            overflow: hidden;
+        }
+
+        .floating-fish {
+            position: absolute;
+            opacity: 0.6;
+            animation: float linear infinite;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateX(-100px) translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+            }
+            90% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateX(100vw) translateY(-20vh) rotate(20deg);
+                opacity: 0;
+            }
+        }
+
+        /* Glassmorphism Classes */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85); 
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.1);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.8);
+            border-radius: 10px;
+        }
+
+        /* Card Float Animation */
+        .rod-card:active {
+            transform: scale(0.96);
+        }
+        
+        .rod-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 20px 40px -5px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Rarity Borders/Glows */
+        .border-Common { border-bottom: 4px solid #cbd5e1; }
+        .border-Uncommon { border-bottom: 4px solid #86efac; }
+        .border-Rare { border-bottom: 4px solid #60a5fa; }
+        .border-Epic { border-bottom: 4px solid #c084fc; }
+        .border-Legendary { border-bottom: 4px solid #fdba74; }
+        .border-Mythical { border-bottom: 4px solid #f472b6; }
+        
+        /* Text Shadows for Header */
+        .text-glow {
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+    </style>
+</head>
+<body class="selection:bg-pink-200 min-h-screen flex flex-col relative text-slate-800">
+
+    <!-- Background Tint Overlay -->
+    <div class="bg-overlay"></div>
+
+    <!-- Animated Fish Background -->
+    <div class="fish-container">
+        <!-- Fish 1 -->
+        <img src="https://i.ibb.co/SDSpC8Nv/blueflame-ray-fish-kohana-volcano-fish-it.webp" class="floating-fish w-24" style="left: 5%; animation-duration: 25s; animation-delay: 0s;">
+        <!-- Fish 2 -->
+        <img src="https://i.ibb.co/dHTkGJv/chrome-tune-fish-fisherman-island-fish-it.webp" class="floating-fish w-20" style="left: 25%; animation-duration: 30s; animation-delay: 5s;">
+        <!-- Fish 3 -->
+        <img src="https://i.ibb.co/RT03YDF8/lavafin-tuna-fish-kohana-volcano-fish-it.webp" class="floating-fish w-28" style="left: 45%; animation-duration: 22s; animation-delay: 2s;">
+        <!-- Fish 4 -->
+        <img src="https://i.ibb.co/mVr9vvZw/magic-tang-fish-esoteric-depths-fish-it.webp" class="floating-fish w-16" style="left: 65%; animation-duration: 35s; animation-delay: 8s;">
+        <!-- Fish 5 -->
+        <img src="https://i.ibb.co/VpL4pm4M/manoai-statue-fish-ancient-jungle-fish-it.webp" class="floating-fish w-24" style="left: 80%; animation-duration: 28s; animation-delay: 1s;">
+        <!-- Fish 6 -->
+        <img src="https://i.ibb.co/93HcRnQD/prismy-seahorse-fish-kohana-fish-it.webp" class="floating-fish w-12" style="left: 15%; animation-duration: 40s; animation-delay: 12s;">
+        <!-- Fish 7 -->
+        <img src="https://i.ibb.co/PvtfYZcR/synodontis-fish-sisyphus-statue-fish-it.webp" class="floating-fish w-20" style="left: 55%; animation-duration: 32s; animation-delay: 15s;">
+        <!-- Fish 8 -->
+        <img src="https://i.ibb.co/hFTW1dyD/temple-spokes-tuna-fish-ancient-jungle-fish-it.webp" class="floating-fish w-22" style="left: 35%; animation-duration: 26s; animation-delay: 7s;">
+    </div>
+
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-40 glass-panel shadow-lg ring-1 ring-black/5">
+        <div class="max-w-md mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <div class="bg-gradient-to-tr from-blue-600 to-cyan-500 text-white p-2 rounded-xl shadow-lg shadow-blue-500/30">
+                    <i class="fa-solid fa-fish text-lg"></i>
+                </div>
+                <h1 class="font-extrabold text-xl tracking-tight text-slate-800">Fisch<span class="text-blue-600">Hub</span></h1>
+            </div>
+            <div class="bg-white/80 border border-white/60 px-3 py-1 rounded-full text-xs font-bold text-slate-600 flex items-center gap-1.5 shadow-sm backdrop-blur-sm">
+                <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(34,197,94,0.6)]"></span>
+                v2.8
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header / Hero -->
+    <header class="relative mb-2 mt-4">
+        <div class="max-w-md mx-auto px-6 pt-6 pb-2 relative z-10 text-center">
+            
+            <!-- Character Image (Floating) -->
+            <div class="absolute right-0 -top-8 w-32 h-32 z-[-1] opacity-90 animate-pulse" style="animation-duration: 4s;">
+               <!-- glow effect behind character -->
+               <div class="absolute inset-0 bg-blue-400 blur-3xl opacity-40 rounded-full"></div>
+            </div>
+            <img src="https://i.ibb.co/0jxFSTz4/unnamed-6-removebg-preview.png" class="absolute -right-2 -top-12 w-40 drop-shadow-2xl transform -rotate-6 z-20 pointer-events-none" alt="Roblox Character">
+
+            <div class="relative z-10">
+                <span class="inline-block py-1 px-4 rounded-full bg-white/90 backdrop-blur-md border border-white/50 text-blue-600 text-xs font-bold mb-3 shadow-lg">
+                    <i class="fa-solid fa-wand-magic-sparkles mr-1"></i> Item Spawner
+                </span>
+                <h2 class="text-4xl font-black leading-tight mb-2 text-white text-glow">
+                    Unlock <br>Rare Rods
+                </h2>
+                <p class="text-white font-medium text-sm leading-relaxed max-w-[200px] mx-auto text-glow opacity-90 mb-4">
+                    Select a rod to inject into your inventory.
+                </p>
+                
+                <!-- Investment / Cash Flow Stats Block -->
+                <div class="glass-card bg-white/90 p-3 rounded-xl mx-auto max-w-sm mb-2 shadow-lg border-white/60">
+                    <div class="flex justify-between divide-x divide-slate-200">
+                        <div class="px-2 flex-1">
+                            <div class="text-[10px] uppercase font-bold text-slate-500 tracking-wider">Cash Flow</div>
+                            <div class="text-sm font-bold text-green-600 flex items-center justify-center gap-1">
+                                <i class="fa-solid fa-arrow-trend-up"></i> +250%
+                            </div>
+                        </div>
+                        <div class="px-2 flex-1">
+                            <div class="text-[10px] uppercase font-bold text-slate-500 tracking-wider">Trading Vol</div>
+                            <div class="text-sm font-bold text-blue-600">High</div>
+                        </div>
+                        <div class="px-2 flex-1">
+                            <div class="text-[10px] uppercase font-bold text-slate-500 tracking-wider">Passive Inc.</div>
+                            <div class="text-sm font-bold text-purple-600">Active</div>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-white/80 text-[10px] font-medium max-w-xs mx-auto drop-shadow-md">
+                    Secure high-value assets for trading and passive income generation.
+                </p>
+
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow px-4 py-4 relative z-10">
+        <!-- Rod Grid -->
+        <div id="rod-grid" class="max-w-md mx-auto grid grid-cols-2 gap-4 pb-24">
+            <!-- Grid items injected by JS -->
+        </div>
+    </main>
+
+    <!-- Modal Overlay -->
+    <div id="modal-overlay" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-md hidden flex items-end sm:items-center justify-center transition-opacity duration-300 opacity-0">
+        
+        <!-- Modal Content -->
+        <div id="modal-content" class="bg-white w-full max-w-sm mx-auto sm:rounded-[2rem] rounded-t-[2rem] shadow-2xl transform transition-all duration-300 translate-y-full sm:translate-y-10 p-6 relative overflow-hidden ring-4 ring-white/50">
+            
+            <!-- Close Button -->
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 bg-slate-100 p-2 rounded-full w-8 h-8 flex items-center justify-center transition-colors">
+                <i class="fa-solid fa-times text-sm"></i>
+            </button>
+
+            <!-- Step 1: Confirmation -->
+            <div id="modal-step-1" class="text-center pt-2">
+                <div class="w-32 h-32 bg-slate-50 rounded-full mx-auto mb-2 flex items-center justify-center relative">
+                    <img id="modal-img" src="" class="w-32 h-32 object-contain drop-shadow-xl z-10 transform transition-transform hover:scale-110" alt="Selected Rod">
+                    <!-- Spinning effect behind item -->
+                    <div class="absolute inset-0 rounded-full border-[2px] border-dashed border-slate-300 animate-spin-slow" style="animation-duration: 20s;"></div>
+                </div>
+                
+                <h3 class="text-2xl font-black text-slate-800 mb-1 tracking-tight" id="modal-title">Rod Name</h3>
+                
+                <div class="flex justify-center items-center gap-2 mb-6">
+                    <span id="modal-badge" class="px-3 py-1 bg-yellow-100 text-yellow-700 text-xs font-bold rounded-lg border border-yellow-200 uppercase tracking-wider shadow-sm">MYTHICAL</span>
+                </div>
+                
+                <div class="space-y-4">
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 focus-within:ring-2 focus-within:ring-blue-400 transition-all flex items-center gap-3 shadow-sm">
+                        <div class="bg-white text-blue-500 w-10 h-10 rounded-xl flex items-center justify-center shadow-sm border border-slate-100 text-lg">
+                            <i class="fa-brands fa-roblox"></i>
+                        </div>
+                        <div class="text-left flex-1">
+                            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Roblox Username</p>
+                            <input type="text" placeholder="Username..." class="w-full bg-transparent text-base font-bold text-slate-800 outline-none placeholder-slate-300">
+                        </div>
+                    </div>
+                    
+                    <button onclick="startProcess()" class="w-full py-4 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white rounded-2xl font-bold text-lg shadow-lg shadow-blue-500/40 active:scale-[0.98] transition-all flex items-center justify-center gap-2 relative overflow-hidden group">
+                        <span class="relative z-10">GET ITEM</span>
+                        <i class="fa-solid fa-bolt relative z-10 group-hover:animate-pulse"></i>
+                        <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+                    </button>
+                    
+                    <p class="text-center text-[10px] text-slate-400 font-medium">
+                        <i class="fa-solid fa-chart-line mr-1"></i> Estimated Trading Value: <span class="text-green-500 font-bold">High Demand</span>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Step 2: Processing -->
+            <div id="modal-step-2" class="hidden text-center py-8">
+                <div class="mb-8 relative">
+                    <div class="w-20 h-20 border-[5px] border-slate-100 border-t-blue-500 rounded-full animate-spin mx-auto"></div>
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <i class="fa-solid fa-satellite-dish text-blue-500 text-2xl animate-pulse"></i>
+                    </div>
+                </div>
+                <h3 class="text-xl font-bold text-slate-800 mb-2">Connecting...</h3>
+                <p id="process-text" class="text-sm font-medium text-slate-500 mb-8">Locating server...</p>
+                
+                <div class="w-full bg-slate-100 rounded-full h-3 overflow-hidden shadow-inner">
+                    <div id="progress-bar" class="h-full bg-gradient-to-r from-blue-400 to-blue-600 rounded-full w-0 transition-all duration-300 shadow-[0_0_10px_rgba(59,130,246,0.5)]"></div>
+                </div>
+            </div>
+
+            <!-- Step 3: Success -->
+            <div id="modal-step-3" class="hidden text-center py-6">
+                <div class="w-24 h-24 bg-green-100 rounded-full mx-auto mb-6 flex items-center justify-center animate-[bounce_1s_infinite]">
+                    <i class="fa-solid fa-check text-4xl text-green-600"></i>
+                </div>
+                <h3 class="text-3xl font-black text-slate-800 mb-3 tracking-tight">Success!</h3>
+                <p class="text-slate-500 font-medium mb-8 leading-relaxed">
+                    The <span class="font-bold text-blue-600" id="success-rod-name">Rod</span> has been queued. Please check your inventory in ~5 mins.
+                </p>
+                <button onclick="closeModal()" class="w-full py-4 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-2xl font-bold text-base transition-colors">
+                    Close
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // Data Configuration
+        const rods = [
+            { name: "Ethereal Prism Rod", img: "https://i.ibb.co/230JjZs0/153px-Ethereal-Prism-Rod.webp", rarity: "Legendary" },
+            { name: "Elder Mossripper", img: "https://i.ibb.co/TBh3qXsC/178px-Elder-Mossripper.webp", rarity: "Rare" },
+            { name: "Evil Pitchfork", img: "https://i.ibb.co/5xfr5bMV/179px-Evil-Pitchfork.webp", rarity: "Epic" },
+            { name: "Rod Of The Zenith", img: "https://i.ibb.co/kstSrTkf/180px-Rod-Of-The-Zenith.webp", rarity: "Mythical" },
+            { name: "Wicked Fang Rod", img: "https://i.ibb.co/svQtYLQj/183px-Wicked-Fang-Rod.webp", rarity: "Rare" },
+            { name: "Merlin's Staff", img: "https://i.ibb.co/C564rjd2/197px-Merlin-s-Staff.webp", rarity: "Legendary" },
+            { name: "Lucid Rod", img: "https://i.ibb.co/w33rcYs/209px-Lucid-Rod.webp", rarity: "Uncommon" },
+            { name: "Nico's Yarncaster", img: "https://i.ibb.co/bgYF6ZKT/226px-Nico-s-Yarncaster.webp", rarity: "Epic" },
+            { name: "Eidolon Rod", img: "https://i.ibb.co/k6kbYKJB/238px-Eidolon-Rod.webp", rarity: "Mythical" },
+            { name: "Spiritbinder", img: "https://i.ibb.co/CKYcdPhx/259px-Spiritbinder.webp", rarity: "Legendary" },
+            { name: "Random Rod", img: "https://i.ibb.co/84PqRskH/208px-Random-Rod.webp", rarity: "Common" }
+        ];
+
+        // Rarity Styling configuration
+        const rarityConfig = {
+            "Common": { bg: "bg-slate-100", text: "text-slate-600", border: "border-Common" },
+            "Uncommon": { bg: "bg-green-50", text: "text-green-600", border: "border-Uncommon" },
+            "Rare": { bg: "bg-blue-50", text: "text-blue-600", border: "border-Rare" },
+            "Epic": { bg: "bg-purple-50", text: "text-purple-600", border: "border-Epic" },
+            "Legendary": { bg: "bg-orange-50", text: "text-orange-600", border: "border-Legendary" },
+            "Mythical": { bg: "bg-pink-50", text: "text-pink-600", border: "border-Mythical" }
+        };
+
+        const grid = document.getElementById('rod-grid');
+
+        // Render Grid
+        rods.forEach((rod, index) => {
+            const config = rarityConfig[rod.rarity] || rarityConfig["Common"];
+            
+            const card = document.createElement('div');
+            // Added padding bottom for the border effect
+            card.className = `rod-card glass-card p-4 rounded-[1.25rem] flex flex-col items-center justify-between gap-3 relative overflow-hidden cursor-pointer select-none group ${config.border}`;
+            card.onclick = () => openModal(rod);
+
+            card.innerHTML = `
+                <div class="absolute top-0 right-0 p-3 opacity-0 group-hover:opacity-100 transition-opacity z-10">
+                    <div class="bg-blue-500 text-white rounded-full w-7 h-7 flex items-center justify-center text-xs shadow-lg transform rotate-90 group-hover:rotate-0 transition-transform duration-300">
+                        <i class="fa-solid fa-plus"></i>
+                    </div>
+                </div>
+                
+                <!-- Floating Rod Image -->
+                <div class="w-full aspect-square bg-transparent rounded-2xl flex items-center justify-center mb-1 group-hover:scale-105 transition-transform duration-300 relative">
+                    <img src="${rod.img}" alt="${rod.name}" class="w-28 drop-shadow-xl object-contain z-10" loading="lazy">
+                    <!-- Subtle Glow behind rod -->
+                    <div class="absolute inset-0 bg-white/40 blur-xl rounded-full transform scale-75 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                </div>
+                
+                <div class="text-center w-full relative z-10">
+                    <h3 class="font-bold text-slate-800 text-sm leading-tight mb-2 min-h-[2.5em] flex items-center justify-center">${rod.name}</h3>
+                    <span class="inline-block px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider border border-transparent ${config.bg} ${config.text} shadow-sm">
+                        ${rod.rarity}
+                    </span>
+                </div>
+            `;
+            grid.appendChild(card);
+        });
+
+        // Modal Logic
+        const overlay = document.getElementById('modal-overlay');
+        const modalContent = document.getElementById('modal-content');
+        
+        const step1 = document.getElementById('modal-step-1');
+        const step2 = document.getElementById('modal-step-2');
+        const step3 = document.getElementById('modal-step-3');
+
+        function openModal(rod) {
+            step1.classList.remove('hidden');
+            step2.classList.add('hidden');
+            step3.classList.add('hidden');
+            document.getElementById('progress-bar').style.width = '0%';
+            
+            const config = rarityConfig[rod.rarity] || rarityConfig["Common"];
+            
+            document.getElementById('modal-title').innerText = rod.name;
+            document.getElementById('modal-img').src = rod.img;
+            document.getElementById('success-rod-name').innerText = rod.name;
+            
+            const badge = document.getElementById('modal-badge');
+            badge.className = `px-3 py-1 text-[10px] font-bold rounded-lg border uppercase tracking-wider shadow-sm ${config.bg} ${config.text} border-current opacity-80`;
+            badge.innerText = rod.rarity;
+
+            overlay.classList.remove('hidden');
+            void overlay.offsetWidth;
+            
+            overlay.classList.remove('opacity-0');
+            modalContent.classList.remove('translate-y-full');
+            modalContent.classList.add('sm:translate-y-0');
+        }
+
+        function closeModal() {
+            overlay.classList.add('opacity-0');
+            modalContent.classList.add('translate-y-full');
+            modalContent.classList.remove('sm:translate-y-0');
+            
+            setTimeout(() => {
+                overlay.classList.add('hidden');
+            }, 300);
+        }
+
+        function startProcess() {
+            step1.classList.add('hidden');
+            step2.classList.remove('hidden');
+            
+            const progressBar = document.getElementById('progress-bar');
+            const processText = document.getElementById('process-text');
+            const steps = [
+                { width: '20%', text: 'Verifying user...' },
+                { width: '45%', text: 'Fetching item data...' },
+                { width: '70%', text: 'Injecting to inventory...' },
+                { width: '90%', text: 'Finalizing transaction...' },
+                { width: '100%', text: 'Done!' }
+            ];
+
+            let currentStep = 0;
+
+            function nextStep() {
+                if (currentStep < steps.length) {
+                    progressBar.style.width = steps[currentStep].width;
+                    processText.innerText = steps[currentStep].text;
+                    currentStep++;
+                    setTimeout(nextStep, Math.random() * 1000 + 500);
+                } else {
+                    setTimeout(() => {
+                        step2.classList.add('hidden');
+                        step3.classList.remove('hidden');
+                    }, 500);
+                }
+            }
+            nextStep();
+        }
+
+        overlay.onclick = (e) => {
+            if (e.target === overlay) closeModal();
+        };
+    </script>
+</body>
+</html>
